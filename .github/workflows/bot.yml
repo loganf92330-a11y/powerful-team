@@ -1,0 +1,26 @@
+name: Auto Commit Bot
+
+on:
+  schedule:
+    - cron: "0 9 * * *"   # runs every day at 9 AM
+  workflow_dispatch:       # allows manual run
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Make change
+        run: |
+          echo "Update $(date)" >> bot-log.txt
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "🤖 Automated commit"
+          git push
